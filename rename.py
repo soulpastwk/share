@@ -1,7 +1,10 @@
 import os
 
+# данный скрипт удаляет часть названия папок и файла во всех вложенных в директорию файлах
+# в данном примере это - [SW.BAND]
+
 # Укажите путь к корневой директории
-root_dir = r"E:\Сливы курсов"
+root_dir = r"E:\полный путь\можно русскими"
 
 def remove_prefix_in_directory(path):
     for dirpath, dirnames, filenames in os.walk(path, topdown=False):
