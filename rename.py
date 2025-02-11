@@ -5,7 +5,7 @@ import os
 # ЗАМЕНИ ТУТ - выдели всемте со скобками и нажми Ctrl+H - [SW.BAND]
 
 # Укажите путь к корневой директории
-root_dir = r"D:\Курсы Милла"
+root_dir = r"D:\Курсы"
 
 def remove_prefix_in_directory(path):
     for dirpath, dirnames, filenames in os.walk(path, topdown=False):
