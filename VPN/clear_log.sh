@@ -4,6 +4,7 @@
 LOG_DIR="/var/log"
 JOURNAL_DIR="$LOG_DIR/journal"
 FAIL2BAN_LOG="$LOG_DIR/fail2ban.log"
+REPORT_LOG="$LOG_DIR/clear_logs_report.log" # Файл отчетов
 
 # Функция для перезаписи файла случайными данными
 overwrite_file() {
@@ -11,17 +12,14 @@ overwrite_file() {
     if [[ -f "$file" ]]; then
         echo "Перезапись файла: $file"
         local filesize=$(stat --format="%s" "$file") # Размер файла в байтах
-
         if [[ "$filesize" -eq 0 ]]; then
             echo "  Файл пустой, пропускаем перезапись."
         else
             for i in {1..6}; do
                 echo "  Проход $i из 6..."
-                # Генерируем случайные данные и записываем их в файл
                 dd if=/dev/urandom of="$file" bs="$filesize" count=1 conv=notrunc status=none
             done
         fi
-
         echo "Удаление файла: $file"
         rm -f "$file" # Удаляем файл после перезаписи
     fi
@@ -33,7 +31,11 @@ echo ""
 
 # Сохраняем размеры логов до очистки
 declare -A before_sizes
-for file in $(find "$LOG_DIR" -type f ! -path "$JOURNAL_DIR/*" ! -name "$(basename "$FAIL2BAN_LOG")" ! -name "$(basename "$FAIL2BAN_LOG").1"); do
+for file in $(find "$LOG_DIR" -type f \
+  ! -path "$JOURNAL_DIR/*" \
+  ! -name "$(basename "$FAIL2BAN_LOG")" \
+  ! -name "$(basename "$FAIL2BAN_LOG").1" \
+  ! -name "$(basename "$REPORT_LOG")"); do
     before_sizes["$file"]=$(du -h --apparent-size "$file" | cut -f1)
 done
 
@@ -46,7 +48,11 @@ echo ""
 
 # Очищаем логи
 echo "Очистка логов..."
-for file in $(find "$LOG_DIR" -type f ! -path "$JOURNAL_DIR/*" ! -name "$(basename "$FAIL2BAN_LOG")" ! -name "$(basename "$FAIL2BAN_LOG").1"); do
+for file in $(find "$LOG_DIR" -type f \
+  ! -path "$JOURNAL_DIR/*" \
+  ! -name "$(basename "$FAIL2BAN_LOG")" \
+  ! -name "$(basename "$FAIL2BAN_LOG").1" \
+  ! -name "$(basename "$REPORT_LOG")"); do
     overwrite_file "$file"
 done
 
