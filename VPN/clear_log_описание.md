@@ -132,14 +132,8 @@ crontab -e
 ---
 
 ### 3. Создайте файл для логов
-Если файл `/var/log/clear_logs_report.log` ещё не существует, создайте его и установите правильные права доступа:
-```bash
-touch /var/log/clear_logs_report.log
-chmod 640 /var/log/clear_logs_report.log
-chown root:adm /var/log/clear_logs_report.log
-```
-- `chmod 640`: Устанавливает права доступа (чтение и запись для владельца, только чтение для группы).
-- `chown root:adm`: Назначает владельца и группу файла.
+
+Добавлено автоматическое создание в сам скрипт
 
 ---
 
@@ -159,8 +153,6 @@ chown root:adm /var/log/clear_logs_report.log
 ```bash
 cat /var/log/clear_logs_report.log
 ```
-- Если файл пустой, это может означать, что скрипт завершился без ошибок или не был выполнен.
-
 ---
 
 ## ⚙️ Пример файла отчёта
