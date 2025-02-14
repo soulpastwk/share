@@ -6,6 +6,13 @@ JOURNAL_DIR="$LOG_DIR/journal"
 FAIL2BAN_LOG="$LOG_DIR/fail2ban.log"
 REPORT_LOG="$LOG_DIR/clear_logs_report.log" # Файл отчетов
 
+# Создаем файл отчетов, если его нет
+if [[ ! -f "$REPORT_LOG" ]]; then
+    touch "$REPORT_LOG"
+    chmod 640 "$REPORT_LOG"
+    chown root:adm "$REPORT_LOG"
+fi
+
 # Функция для перезаписи файла случайными данными
 overwrite_file() {
     local file="$1"
@@ -26,8 +33,8 @@ overwrite_file() {
 }
 
 # Выводим заголовок
-echo "=== Начало очистки логов ==="
-echo ""
+echo "=== Начало очистки логов ($(date)) ===" | tee -a "$REPORT_LOG"
+echo "" | tee -a "$REPORT_LOG"
 
 # Сохраняем размеры логов до очистки
 declare -A before_sizes
@@ -40,20 +47,20 @@ for file in $(find "$LOG_DIR" -type f \
 done
 
 # Выводим размеры логов до очистки
-echo "Размеры логов до очистки:"
+echo "Размеры логов до очистки:" | tee -a "$REPORT_LOG"
 for file in "${!before_sizes[@]}"; do
-    echo "  $file: ${before_sizes[$file]}"
+    echo "  $file: ${before_sizes[$file]}" | tee -a "$REPORT_LOG"
 done
-echo ""
+echo "" | tee -a "$REPORT_LOG"
 
 # Очищаем логи
-echo "Очистка логов..."
+echo "Очистка логов..." | tee -a "$REPORT_LOG"
 for file in $(find "$LOG_DIR" -type f \
   ! -path "$JOURNAL_DIR/*" \
   ! -name "$(basename "$FAIL2BAN_LOG")" \
   ! -name "$(basename "$FAIL2BAN_LOG").1" \
   ! -name "$(basename "$REPORT_LOG")"); do
-    overwrite_file "$file"
+    overwrite_file "$file" | tee -a "$REPORT_LOG"
 done
 
 # Удаляем старые архивные логи (например, *.gz или *.1), исключая fail2ban
@@ -62,7 +69,7 @@ find "$LOG_DIR" -type f \( -name "*.gz" -o -name "*.1" \) \
   -exec rm -f {} \;
 
 # Создаём новые пустые файлы на месте удалённых
-echo "Создание новых пустых файлов..."
+echo "Создание новых пустых файлов..." | tee -a "$REPORT_LOG"
 for file in "${!before_sizes[@]}"; do
     touch "$file"
     chmod 640 "$file" # Устанавливаем права доступа
@@ -70,5 +77,5 @@ for file in "${!before_sizes[@]}"; do
 done
 
 # Выводим результаты
-echo ""
-echo "=== Очистка завершена ==="
+echo "" | tee -a "$REPORT_LOG"
+echo "=== Очистка завершена ($(date)) ===" | tee -a "$REPORT_LOG"
