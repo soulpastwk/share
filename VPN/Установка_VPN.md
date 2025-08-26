@@ -6,36 +6,19 @@
 > **Важно!** Рекомендуется использовать Ubuntu 24. Если её нет в списке доступных версий, выберите самую последнюю и обновитесь до 24 версии.
 
 ---
-
-### Исправление ошибки `debconf: unable to initialize frontend: Dialog`
-
-Эта ошибка возникает, когда система пытается использовать графический интерфейс для настройки пакетов, но соответствующая программа не установлена. Это часто происходит на серверах или в минимальных системах.
-
-#### Вариант 1: Установить `dialog`
-```bash
-sudo apt update
-sudo apt install -y dialog
-```
-
-#### Вариант 2: Отключить диалоги
-```bash
-echo 'debconf debconf/frontend select noninteractive' | sudo debconf-set-selections
-```
-
----
-
-### Обновление системы и установка необходимых пакетов
-```bash
-apt update && apt upgrade -y
-apt install curl -y
-```
-
+## ОБНОВИЛ статью 26.08.2025 НО скрины могут немного не совпадать, главное использовать блок команд ниже
+## B не забыть прописать в панеле сертификаты, на скрине их пока нет тут ...
 ---
 
 ### Установка 3X-UI
-Используйте следующий скрипт для автоматической установки:
+Используйте следующий скрипт для автоматической установки немного подшаманил с сертами, у меня то чно надо прям:
 ```bash
-bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+apt update && apt install -y curl dos2unix openssl systemd \
+&& rm -f ~/cert-vetal-gis.sh \
+&& curl -fsSL -o ~/cert-vetal-gis.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/cert-vetal-gis.sh \
+&& dos2unix ~/cert-vetal-gis.sh 2>/dev/null || true \
+&& chmod +x ~/cert-vetal-gis.sh \
+&& bash ~/cert-vetal-gis.sh
 ```
 
 После запуска скрипта:
