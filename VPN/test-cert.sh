@@ -41,7 +41,7 @@ read -p "Введите цифру (1-5): " CHOICE
 OUs=("Tech" "IT" "Support" "DevOps" "Cloud" "Edge" "Security")
 RAND_OU=${OUs[$RANDOM % ${#OUs[@]}]}
 
-# Пулы
+# Пулы данных
 YANDEX_ST=("Moscow" "Saint-Petersburg" "Novosibirsk")
 YANDEX_L=("Moscow" "Saint-Petersburg" "Novosibirsk")
 YANDEX_CN=("mail.yandex.com" "disk.yandex.ru" "yandex.ru" "passport.yandex.ru")
@@ -62,7 +62,7 @@ TG_ST=("Dubai" "Sharjah")
 TG_L=("Dubai" "Sharjah")
 TG_CN=("web.telegram.org" "core.telegram.org" "api.telegram.org" "t.me")
 
-# Выбор
+# Выбор маскировки
 case $CHOICE in
   1) C="RU"; ORG='Yandex LLC'
      ST=${YANDEX_ST[$RANDOM % ${#YANDEX_ST[@]}]}
@@ -97,6 +97,28 @@ case $CHOICE in
      ;;
 esac
 
+# === Новый блок: выбор типа ключа ===
+echo "Выберите тип ключа:"
+echo "1) RSA-2048"
+echo "2) RSA-3072"
+echo "3) RSA-4096"
+echo "4) ECDSA P-256 (prime256v1)"
+echo "5) ECDSA P-384 (secp384r1)"
+echo "6) ECDSA P-521 (secp521r1)"
+read -p "Введите цифру (1-6): " KEY_CHOICE
+
+KEY_TYPE=""
+case $KEY_CHOICE in
+  1) KEY_TYPE="rsa:2048" ;;
+  2) KEY_TYPE="rsa:3072" ;;
+  3) KEY_TYPE="rsa:4096" ;;
+  4) KEY_TYPE="ec -pkeyopt ec_paramgen_curve:prime256v1" ;;
+  5) KEY_TYPE="ec -pkeyopt ec_paramgen_curve:secp384r1" ;;
+  6) KEY_TYPE="ec -pkeyopt ec_paramgen_curve:secp521r1" ;;
+  *) echo "Неверный выбор, используем RSA-2048."
+     KEY_TYPE="rsa:2048" ;;
+esac
+
 # Пути
 CERT_DIR="/etc/ssl/self_signed_cert"
 CERT_NAME="self_signed"
@@ -108,12 +130,12 @@ CONF_PATH="$CERT_DIR/$CERT_NAME.openssl.cnf"
 
 # Срок/даты/серийник
 DAYS_VALID=3650
-DAYS_SHIFT=$((RANDOM % 30))             # 0..29 дней назад
+DAYS_SHIFT=$((RANDOM % 30))
 START_DATE=$(date -u -d "-$DAYS_SHIFT days" +"%Y%m%d%H%M%SZ")
 END_DATE=$(date -u -d "+$((DAYS_VALID - DAYS_SHIFT)) days" +"%Y%m%d%H%M%SZ")
 SERIAL=$(openssl rand -hex 16)
 
-# Конфиг для CSR (кавычки вокруг O — чтобы не падало на запятых)
+# Конфиг OpenSSL
 cat > "$CONF_PATH" <<EOF
 [ req ]
 default_bits       = 2048
@@ -137,12 +159,17 @@ DNS.1 = $CN
 EOF
 
 # Генерация ключа и CSR
-openssl req -new -nodes -newkey rsa:2048 \
-  -keyout "$KEY_PATH" \
-  -out "$CSR_PATH" \
-  -config "$CONF_PATH"
+if [[ "$KEY_TYPE" == rsa* ]]; then
+  openssl req -new -nodes -newkey $KEY_TYPE \
+    -keyout "$KEY_PATH" \
+    -out "$CSR_PATH" \
+    -config "$CONF_PATH"
+else
+  openssl genpkey -algorithm $KEY_TYPE -out "$KEY_PATH"
+  openssl req -new -key "$KEY_PATH" -out "$CSR_PATH" -config "$CONF_PATH"
+fi
 
-# Подпись сертификата (SAN из того же конфинга)
+# Подпись сертификата
 openssl x509 -req -in "$CSR_PATH" \
   -signkey "$KEY_PATH" \
   -out "$CERT_PATH" \
@@ -155,6 +182,7 @@ openssl x509 -req -in "$CSR_PATH" \
 echo "============================================================"
 echo " Сертификат успешно создан!"
 echo " Subject: C=$C, ST=$ST, L=$L, O=$ORG, OU=$RAND_OU, CN=$CN"
+echo " KeyType: $KEY_TYPE"
 echo " Serial:  $SERIAL"
 echo " Start:   $START_DATE"
 echo " End:     $END_DATE"
