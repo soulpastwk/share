@@ -22,7 +22,7 @@ echo "│   ██  ████  ██   ██████                   
 echo "│   ██    ██  ██       ██                                   │"
 echo "│   ████████  ██   ██████                                   │"
 echo "│                                                           │"
-echo "│   Secure Connections & Certificate Generator             │"
+echo "│   Secure Connections & Certificate Generator              │"
 echo "│                    Vitaliy Edition                        │"
 echo "└───────────────────────────────────────────────────────────┘"
 
