@@ -16,13 +16,13 @@ fi
 
 echo "┌───────────────────────────────────────────────────────────┐"
 echo "│                                                           │"
-echo "│   ██████    ██   ██████      GiS VPN Tools                │"
+echo "│   ██████    ██   ██████    🌍GiS VPN Tools                │"
 echo "│   ██        ██   ██                                       │"
 echo "│   ██  ████  ██   ██████                                   │"
 echo "│   ██    ██  ██       ██                                   │"
 echo "│   ████████  ██   ██████                                   │"
 echo "│                                                           │"
-echo "│   Secure Connections & Certificate Generator              │"
+echo "│  🚀 Secure Connections & Certificate Generator            │"
 echo "│                    Vitaliy Edition                        │"
 echo "└───────────────────────────────────────────────────────────┘"
 
