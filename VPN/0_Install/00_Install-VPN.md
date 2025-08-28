@@ -68,7 +68,7 @@ apt install -y nano mc htop lsof iperf3 curl dos2unix openssl systemd
 Устанавливаем 3X-UI с панелью и самоподписанными сертификатами на 10 лет:
 
 ```bash
-curl -fsSL -o ~/00_Сert_VPN_stable_version.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/00_Сert_VPN_stable_version.sh \
+curl -fsSL -o ~/00_Сert_VPN_stable_version.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/0_Install/00_Сert_VPN_stable_version.sh \
 && dos2unix ~/00_Сert_VPN_stable_version.sh 2>/dev/null || true \
 && chmod +x ~/00_Сert_VPN_stable_version.sh \
 && bash ~/00_Сert_VPN_stable_version.sh
@@ -335,7 +335,7 @@ ICMP пакеты
 ## ⚠️ ТАК ЖЕ ВАЖНО: обновление пакета `sudo`
 
 Рекомендуется обновить пакет **sudo** до последней версии.
-Инструкция доступна так же в моём репозитории по ссылке: [Обновление sudo](https://github.com/soulpastwk/share/blob/main/VPN/01_Update_Sudo.md)
+Инструкция доступна так же в моём репозитории по ссылке: [Обновление sudo](https://github.com/soulpastwk/share/blob/main/VPN/0_Install/01_Update_Sudo.md)
 
 ### ❗ Причина
 
