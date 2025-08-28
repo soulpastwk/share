@@ -17,7 +17,6 @@ bash ~/cert-vetal-gis.sh
 
 echo "Настройка SSH (перевод на нестандартный порт)..."
 sed -i 's/^#Port 22/Port 60022/' /etc/ssh/sshd_config
-sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
 systemctl restart ssh
 
 echo "Настройка Fail2Ban для SSH..."
@@ -45,7 +44,7 @@ cat <<EOF >> /etc/fail2ban/jail.local
 [3x-ui]
 enabled = true
 filter = 3x-ui
-action = nftables[name=3XUI, port=8443, protocol=tcp]
+action = nftables[name=3XUI, port=60000, protocol=tcp]
 logpath = /etc/x-ui/x-ui.log
 findtime = 600
 maxretry = 3
