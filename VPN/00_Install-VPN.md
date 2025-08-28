@@ -271,15 +271,20 @@ echo "GRUB_CMDLINE_LINUX=\"ipv6.disable=1\"" | tee -a /etc/default/grub
 update-grub
 reboot
 ```
+---
 
-### Доп. защита ICMP
+## 🔒 Дополнительная защита ICMP
 
-В `/etc/sysctl.conf` добавляем три строки:
+Чтобы усложнить сетевые сканирования и защитить сервер:
 
-```conf
-net.ipv4.icmp_echo_ignore_all = 1
-net.ipv4.icmp_echo_ignore_broadcasts = 1
-net.ipv4.icmp_ignore_bogus_error_responses = 1
+```bash
+# Добавляем параметры в /etc/sysctl.conf
+echo "net.ipv4.icmp_echo_ignore_all = 1" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_echo_ignore_broadcasts = 1" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_ignore_bogus_error_responses = 1" >> /etc/sysctl.conf
+
+# Применяем изменения
+sysctl -p
 ```
 
 ## 📊 Объяснение параметров
