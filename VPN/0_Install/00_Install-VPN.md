@@ -104,8 +104,6 @@ nano /etc/ssh/sshd_config
 
 ```ini
 Port 60022        # выбираем нестандартный порт (60000–65000)
-PermitRootLogin no
-PasswordAuthentication no   # при использовании ключей
 Banner none
 PrintMotd no
 DebianBanner no
