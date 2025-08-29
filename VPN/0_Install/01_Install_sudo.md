@@ -85,10 +85,3 @@ sudo apt install --reinstall sudo
 ---
 
 ✅ Теперь обновление `sudo` до актуальной версии занимает всего **одну команду**!
-
-```
-
----
-
-Хочешь, я оформлю для тебя **иконки GitHub-style (shields.io)** в начало README (например, версия sudo, CVE fixed, tested on Ubuntu/Debian)?
-```
