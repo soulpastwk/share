@@ -200,8 +200,6 @@ table inet filter {
         # Пример: iperf3 только с определенного IP
         ip saddr 192.168.1.1 tcp dport 5201 accept
 
-        # ICMP блокируем
-        icmp drop
     }
 
     chain forward {
