@@ -1,7 +1,8 @@
-Отлично 👍
-Вот дополненная версия **README.md** с установкой в **одну строку через `curl`**:
+[![sudo version](https://img.shields.io/badge/sudo-1.9.17p2-brightgreen?style=flat-square)](https://www.sudo.ws/)
+[![CVE Fixed](https://img.shields.io/badge/CVE--2025--32463-fixed-blue?style=flat-square)](https://nvd.nist.gov/vuln/detail/CVE-2025-32463)
+![Platform](https://img.shields.io/badge/platform-Linux-lightgrey?style=flat-square&logo=linux)
+![Tested on](https://img.shields.io/badge/tested%20on-Ubuntu%2024.04%20%7C%20Debian%2012-orange?style=flat-square)
 
-````markdown
 # 🚀 Автоматическая установка и обновление `sudo` до версии 1.9.17p2
 
 Скрипт позволяет **в один клик обновить sudo** до последней стабильной версии **1.9.17p2** (26 июля 2025), устраняя критическую уязвимость (CVE-2025-32463).
