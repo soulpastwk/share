@@ -14,11 +14,12 @@
 Используйте следующий скрипт для автоматической установки немного подшаманил с сертами, у меня то чно надо прям:
 ```bash
 apt update && apt install -y curl dos2unix openssl systemd \
-&& rm -f ~/cert-vetal-gis.sh \
-&& curl -fsSL -o ~/cert-vetal-gis.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/cert-vetal-gis.sh \
-&& dos2unix ~/cert-vetal-gis.sh 2>/dev/null || true \
-&& chmod +x ~/cert-vetal-gis.sh \
-&& bash ~/cert-vetal-gis.sh
+&& rm -f ~/00_Сert_VPN_stable_version.sh \
+&& curl -fsSL -o ~/00_Сert_VPN_stable_version.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/0_Install/00_Сert_VPN_stable_version.sh \
+&& dos2unix ~/00_Сert_VPN_stable_version.sh 2>/dev/null || true \
+&& chmod +x ~/00_Сert_VPN_stable_version.sh \
+&& bash ~/00_Сert_VPN_stable_version.sh
+
 ```
 
 После запуска скрипта:
