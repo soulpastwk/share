@@ -1,4 +1,4 @@
-# 📦 VPN / 0_Install
+# 📦 Что в этом разделе ?
 
 [![OS Linux](https://img.shields.io/badge/OS-Linux-blue?logo=linux&logoColor=white)](https://www.linux.org/)
 [![OpenSSL](https://img.shields.io/badge/OpenSSL-%E2%9C%94-green?logo=openssl&logoColor=white)](https://www.openssl.org/)
