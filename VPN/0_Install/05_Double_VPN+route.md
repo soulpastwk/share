@@ -18,6 +18,8 @@
 
 ## Схема работы
 
+![vpn2](https://github.com/soulpastwk/share/blob/main/media/vpn00/vpn2.png)
+
 ```text
                       ┌─────────────────────────────┐
                       │        Клиент VPN           │
