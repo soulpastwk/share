@@ -54,9 +54,13 @@
 
 ### 🔐 Безопасность и обновления  
 [![Security](https://img.shields.io/badge/Security-Updates-red?logo=linux&logoColor=white)](01_Install_sudo.md)  
+[![SSH Keys](https://img.shields.io/badge/SSH--Keys-Enabled-green?logo=gnubash&logoColor=white)](VPN/0_Install/07_SSH-key_settings.md)  
+
 - 📝 [Инструкция: обновление пакета `sudo` в один клик](01_Install_sudo.md)  
 - ⚙️ [Скрипт: обновление пакета `sudo` в один клик](01_Install_sudo.sh)  
 - 📝 [Инструкция: обновление `sudo` поэтапно](01_Update_Sudo.md)  
+- 📝 [Использование SSH-ключей для входа без пароля](VPN/0_Install/07_SSH-key_settings.md) 🔑  
+
 
 ### 🌐 Дополнительно — Каскадный VPN  
 [![Double VPN](https://img.shields.io/badge/Double-VPN-orange?logo=github)](02_Install_Double_VPN.md)  
