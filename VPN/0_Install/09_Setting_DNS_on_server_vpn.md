@@ -180,5 +180,6 @@ kdig @94.140.14.14 google.com ✅
 ```bash
 dig +short @94.140.14.14 doubleclick.net
 # NXDOMAIN -> реклама блокируется
+или 0.0.0.0 -> реклама блокируется
 ```
 
