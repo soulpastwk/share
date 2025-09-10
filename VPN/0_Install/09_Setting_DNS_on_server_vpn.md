@@ -101,6 +101,12 @@ sudo nano /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 network: {config: disabled}
 ```
 
+Перезапуск интерфейса:
+
+```bash
+sudo ifdown --force ens1 && sudo ifup ens1
+resolvectl status
+```
 ---
 
 ## 🛠 Настройка systemd-resolved
