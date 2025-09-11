@@ -80,6 +80,28 @@ sysctl net.ipv4.ip_forward
 ```
 
 ---
+## Рекомендую ещё добавить эти изменения в конфиги ниже:
+
+## 🌐 Отключение IPv6 в самом GRUB и защита от ICMP
+
+```bash
+echo "GRUB_CMDLINE_LINUX=\"ipv6.disable=1\"" | tee -a /etc/default/grub
+update-grub
+reboot
+```
+---
+
+## 🔒 Дополнительная защита ICMP
+
+```bash
+# Добавляем параметры в /etc/sysctl.conf
+echo "net.ipv4.icmp_echo_ignore_all = 1" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_echo_ignore_broadcasts = 1" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_ignore_bogus_error_responses = 1" >> /etc/sysctl.conf
+
+# Применяем изменения
+sysctl -p
+```
 
 👉 Такой конфиг подходит именно для **VPN-сервера**:
 
