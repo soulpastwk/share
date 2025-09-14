@@ -367,7 +367,11 @@ sudo fail2ban-client set sshd unbanip 192.168.1.100
 
 ⚠️ Перед настройкой обязательно проверьте **порт SSH** и **порты, которые использует 3X-UI** для Веб-ки и 443 (или 8433 если каскадный VPN)
 
-Файл `/etc/nftables.conf`:
+В файле nftables.conf удаляем всё и вставляем содержимое ниже:
+
+```bash
+nano /etc/nftables.conf
+```
 
 ```nft
 #!/usr/sbin/nft -f
