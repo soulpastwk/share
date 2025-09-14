@@ -111,7 +111,8 @@ network: {config: disabled}
 apt install ifupdown -y
 ```
 
-Перезапуск интерфейса:
+Перезапуск интерфейса: <br>
+⚠️ Замените ens1 на ваш интерфейс (скорее это будет eth0 или ens3)
 
 ```bash
 sudo ifdown --force ens1 && sudo ifup ens1
