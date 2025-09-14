@@ -103,6 +103,13 @@ sudo nano /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
 network: {config: disabled}
 ```
 
+> \[!TIP]
+> Установите **ifupdown** если его нет
+
+```bash
+apt install ifupdown -y
+```
+
 Перезапуск интерфейса:
 
 ```bash
@@ -161,6 +168,18 @@ resolvectl status | grep 'DNS Servers' -A2
 ```
 
 В выводе должны быть только ваши IP-адреса и ничего более.
+
+> \[!TIP]
+> Если в выводе команды (resolvectl status | grep 'DNS Servers' -A2) <br>
+> видите DNS 1.1.1.1 или 8.8.8.8
+> То надо закомитить файл **eth0** путём переименования его в **eth0.bak** по пути 
+
+```bash
+cd /etc/network/interfaces.d
+```
+![dns-11](https://github.com/soulpastwk/share/blob/main/media/vpn00/dns-011.png)
+
+![dns-10](https://github.com/soulpastwk/share/blob/main/media/vpn00/dns-010.png)
 
 #### 🛠 Установка пакетов для проверки работы DNS:
 
