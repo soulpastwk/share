@@ -122,6 +122,11 @@ sudo ifdown --force ens1 && sudo ifup ens1
 resolvectl status
 ```
 
+> \[!TIP]
+> Если появилась ошибка `unknown interface`, читайте подробное руководство:
+> [https://github.com/soulpastwk/share/blob/main/VPN/0\_Install/10\_Setting\_DNS\_errors.md](https://github.com/soulpastwk/share/blob/main/VPN/0_Install/10_Setting_DNS_errors.md)
+
+
 ## 🛠 Настройка systemd-resolved
 
 Вставляем в `/etc/systemd/resolved.conf` следующий конфиг:
