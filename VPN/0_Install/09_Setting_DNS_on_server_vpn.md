@@ -208,7 +208,7 @@ Setting LLMNR support level "yes" for "2", but the global support level is "no".
 (локальный резолв имён через multicast).
 
 > \[!NOTE]
-> На работу сети и VPN это не влияет. Более того, для безопасности на VPN-сервере лучше оставлять LLMNR выключенным.
+> На работу сети и VPN это не влияет.
 
 ---
 
