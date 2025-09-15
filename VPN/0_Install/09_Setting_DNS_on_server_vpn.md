@@ -45,6 +45,8 @@ network:
   renderer: networkd
   ethernets:
     ens1:
+      dhcp4: no
+      dhcp6: no
       addresses:
         - 1.148.104.218/24 # ip вашего сервера
       routes:
