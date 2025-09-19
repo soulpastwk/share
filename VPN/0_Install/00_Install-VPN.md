@@ -127,10 +127,10 @@ apt install -y nano mc htop lsof iperf3 curl dos2unix openssl systemd fail2ban n
 Устанавливаем 3X-UI с панелью и самоподписанными сертификатами на 10 лет:
 
 ```bash
-curl -fsSL -o ~/00_Сert_VPN_stable_version.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/0_Install/00_Сert_VPN_stable_version.sh \
-&& dos2unix ~/00_Сert_VPN_stable_version.sh 2>/dev/null || true \
-&& chmod +x ~/00_Сert_VPN_stable_version.sh \
-&& bash ~/00_Сert_VPN_stable_version.sh
+curl -fsSL -o ~/00_Cert_VPN_stable_version.sh https://raw.githubusercontent.com/soulpastwk/share/main/VPN/0_Install/00_Cert_VPN_stable_version.sh \
+&& dos2unix ~/00_Cert_VPN_stable_version.sh 2>/dev/null || true \
+&& chmod +x ~/00_Cert_VPN_stable_version.sh \
+&& bash ~/00_Cert_VPN_stable_version.sh
 ```
 
 ### Что делает скрипт:
