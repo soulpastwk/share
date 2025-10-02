@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройка NTP и часового пояса на Astra Linux и РЕД ОС</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f9f9f9; }
+        h2, h3, h4 { margin-top: 1em; }
+        pre { background: #272822; color: #f8f8f2; padding: 10px; overflow-x: auto; border-radius: 5px; }
+        code { font-family: monospace; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        blockquote { background: #eee; padding: 10px; border-left: 5px solid #ccc; margin: 20px 0; }
+        img.badge { vertical-align: middle; margin-right: 5px; }
+        hr { border: none; border-top: 1px solid #ccc; margin: 2em 0; }
+    </style>
+</head>
+<body>
+
+<h1>⏱ Настройка NTP и часового пояса на Astra Linux и РЕД ОС</h1>
+
+<p>
+    <img class="badge" src="https://img.shields.io/badge/platform-Linux-lightgrey?style=flat-square&logo=linux" alt="Platform">
+    <img class="badge" src="https://img.shields.io/badge/tested%20on-R%C4%80D%20OS%207.3%20|%208.0%20|%20Astra%20SE%201.7.5%20|%201.8-orange?style=flat-square" alt="Tested on">
+    <img class="badge" src="https://img.shields.io/badge/service-NTP-blue?style=flat-square" alt="Service NTP">
+    <img class="badge" src="https://img.shields.io/badge/sync-active-brightgreen?style=flat-square" alt="Sync Status">
+    <img class="badge" src="https://img.shields.io/badge/timezone-Asia%2FYekaterinburg-yellow?style=flat-square" alt="Timezone">
+</p>
+
+<p>Инструкция по настройке <strong>NTP</strong> и смены часового пояса для консолей <strong>Astra Linux</strong> и <strong>РЕД ОС (7.3/8.0)</strong>. Подходит для сетей с собственным сервером времени.</p>
+
+<hr>
+
+<h2>🔧 Общие сведения</h2>
+<ul>
+    <li>Собственный NTP-сервер: <code>192.168.10.100</code></li>
+    <li>Работаем <strong>только в консоли</strong>, без GUI</li>
+    <li>NTP синхронизирует <strong>UTC-время</strong>, часовой пояс управляет локальным отображением времени</li>
+</ul>
+
+<blockquote>
+<p><strong>TIP:</strong> После смены часового пояса перезапуск NTP не требуется.</p>
+</blockquote>
+
+<hr>
+
+<h2>📌 1. Определение используемой службы NTP</h2>
+<pre><code>systemctl status systemd-timesyncd ntp chronyd 2>/dev/null | grep -E "Active:|Loaded:"
+# или по отдельности:
+systemctl is-active systemd-timesyncd
+systemctl is-active ntp
+systemctl is-active chronyd
+</code></pre>
+
+<hr>
+
+<h2>🐧 2. Настройка NTP</h2>
+
+<h3>Astra Linux (Debian-based)</h3>
+
+<h4>✅ systemd-timesyncd (по умолчанию)</h4>
+<pre><code>sudo nano /etc/systemd/timesyncd.conf</code></pre>
+
+<pre><code>[Time]
+NTP=192.168.10.100
+FallbackNTP=
+</code></pre>
+
+<p>FallbackNTP - заполняем если есть второй сервер времени - резервный.</p>
+
+<pre><code>sudo systemctl restart systemd-timesyncd
+sudo systemctl enable systemd-timesyncd
+timedatectl status
+</code></pre>
+
+<h4>✅ chrony (рекомендуется)</h4>
+<pre><code>sudo apt update
+sudo apt install chrony
+sudo nano /etc/chrony/chrony.conf
+</code></pre>
+
+<pre><code>server 192.168.10.100 iburst
+# Закомментируйте другие server строки
+</code></pre>
+
+<pre><code>sudo systemctl restart chrony
+sudo systemctl enable chrony
+chronyc sources -v
+chronyc tracking
+</code></pre>
+
+<h4>✅ ntpd</h4>
+<pre><code>sudo apt install ntp
+sudo nano /etc/ntp.conf
+</code></pre>
+
+<pre><code>server 192.168.10.100 iburst
+</code></pre>
+
+<pre><code>sudo systemctl restart ntp
+sudo systemctl enable ntp
+ntpq -p
+</code></pre>
+
+<hr>
+
+<h3>РЕД ОС (ALT Linux-based)</h3>
+
+<h4>✅ chrony</h4>
+<pre><code>sudo apt-get update
+sudo apt-get install chrony
+sudo nano /etc/chrony.conf   # или /etc/chrony/chrony.conf
+</code></pre>
+
+<pre><code>server 192.168.10.100 iburst
+</code></pre>
+
+<pre><code>sudo systemctl restart chronyd
+sudo systemctl enable chronyd
+chronyc sources -v
+</code></pre>
+
+<h4>✅ ntpd</h4>
+<pre><code>sudo apt-get install ntp
+sudo nano /etc/ntp.conf
+</code></pre>
+
+<pre><code>server 192.168.10.100 iburst
+</code></pre>
+
+<pre><code>sudo systemctl restart ntpd
+sudo systemctl enable ntpd
+ntpq -p
+</code></pre>
+
+<hr>
+
+<h2>🔐 3. Настройка брандмауэра</h2>
+<pre><code># iptables
+sudo iptables -A INPUT -p udp --dport 123 -j ACCEPT
+</code></pre>
+
+<blockquote>
+<p><strong>IMPORTANT:</strong> Для <code>nftables</code> или <code>firewalld</code> команды будут отличаться.</p>
+</blockquote>
+
+<hr>
+
+<h2>🕒 4. Смена часового пояса на Екатеринбург</h2>
+<p>Часовой пояс: <code>Asia/Yekaterinburg</code></p>
+
+<h4>✅ Через timedatectl</h4>
+<pre><code>timedatectl          # проверить текущий
+sudo timedatectl set-timezone Asia/Yekaterinburg
+timedatectl          # проверить результат
+date                 # локальное время
+</code></pre>
+
+<h4>✅ Вручную через символическую ссылку</h4>
+<pre><code>sudo rm -f /etc/localtime
+sudo ln -s /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+echo "Asia/Yekaterinburg" | sudo tee /etc/timezone  # Debian-based
+</code></pre>
+
+<hr>
+
+<h2>🧪 5. Проверка</h2>
+<table>
+    <tr>
+        <th>Сервис</th>
+        <th>Команда проверки</th>
+        <th>Статус</th>
+    </tr>
+    <tr>
+        <td>chrony</td>
+        <td><code>chronyc tracking</code></td>
+        <td><img src="https://img.shields.io/badge/sync-active-brightgreen?style=flat-square" alt="Sync"></td>
+    </tr>
+    <tr>
+        <td>ntpd</td>
+        <td><code>ntpq -p</code></td>
+        <td><img src="https://img.shields.io/badge/sync-active-brightgreen?style=flat-square" alt="Sync"></td>
+    </tr>
+    <tr>
+        <td>systemd-timesyncd</td>
+        <td><code>timedatectl status</code></td>
+        <td><img src="https://img.shields.io/badge/sync-active-brightgreen?style=flat-square" alt="Sync"></td>
+    </tr>
+</table>
+
+<hr>
+
+<h2>⚡ 6. Пример полной настройки (Astra Linux + chrony + Екатеринбург)</h2>
+<pre><code># 1. Часовой пояс
+sudo timedatectl set-timezone Asia/Yekaterinburg
+echo "Asia/Yekaterinburg" | sudo tee /etc/timezone
+
+# 2. Настройка chrony
+echo "server 192.168.10.100 iburst" | sudo tee /etc/chrony/chrony.conf
+
+# 3. Перезапуск сервиса
+sudo systemctl restart chrony
+sudo systemctl enable chrony
+
+# 4. Проверка
+timedatectl
+chronyc tracking
+date
+</code></pre>
+
+<hr>
+
+<h2>🔖 Рекомендации</h2>
+<ul>
+    <li><strong>Chrony</strong> — точная синхронизация, подходит для виртуальных машин.</li>
+    <li><strong>NTPD</strong> — классика, менее гибкий.</li>
+    <li><strong>systemd-timesyncd</strong> — простой клиент для базовой синхронизации.</li>
+</ul>
+
+<blockquote>
+<p><strong>INFO:</strong> Применимо для:</p>
+<ul>
+    <li>Astra SE 1.7.5 / 1.8</li>
+    <li>РЕД ОС 7.3 / 8.0</li>
+    <li>Общие конфиги подходят для других Linux-дистрибутивов.</li>
+</ul>
+</blockquote>
+
+</body>
+</html>
